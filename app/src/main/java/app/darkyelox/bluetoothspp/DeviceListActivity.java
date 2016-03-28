@@ -14,22 +14,23 @@
  * limitations under the License.
  */
 
-package app.akexorcist.bluetoothspp;
+package app.darkyelox.bluetoothspp;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
-import app.akexorcist.bluetotohspp.library.BluetoothSPP;
-import app.akexorcist.bluetotohspp.library.BluetoothSPP.OnDataReceivedListener;
-import app.akexorcist.bluetotohspp.library.BluetoothState;
-import app.akexorcist.bluetotohspp.library.DeviceList;
+import app.darkyelox.bluetoothspp.library.BluetoothSPP;
+import app.darkyelox.bluetoothspp.library.BluetoothSPP.OnDataReceivedListener;
+import app.darkyelox.bluetoothspp.library.BluetoothState;
+import app.darkyelox.bluetoothspp.library.DeviceList;
 
-public class DeviceListActivity extends Activity {
+public class DeviceListActivity extends AppCompatActivity {
     BluetoothSPP bt;
 
     protected void onCreate(Bundle savedInstanceState) {

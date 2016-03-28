@@ -14,21 +14,22 @@
  * limitations under the License.
  */
 
-package app.akexorcist.bluetoothspp;
+package app.darkyelox.bluetoothspp;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
-import app.akexorcist.bluetotohspp.library.BluetoothSPP;
-import app.akexorcist.bluetotohspp.library.BluetoothState;
-import app.akexorcist.bluetotohspp.library.BluetoothSPP.BluetoothConnectionListener;
-import app.akexorcist.bluetotohspp.library.BluetoothSPP.OnDataReceivedListener;
-import app.akexorcist.bluetotohspp.library.DeviceList;
+import app.darkyelox.bluetoothspp.library.BluetoothSPP;
+import app.darkyelox.bluetoothspp.library.BluetoothState;
+import app.darkyelox.bluetoothspp.library.BluetoothSPP.BluetoothConnectionListener;
+import app.darkyelox.bluetoothspp.library.BluetoothSPP.OnDataReceivedListener;
+import app.darkyelox.bluetoothspp.library.DeviceList;
 
 public class SimpleActivity extends Activity {
 	BluetoothSPP bt;
@@ -38,35 +39,32 @@ public class SimpleActivity extends Activity {
 		setContentView(R.layout.activity_simple);
 		
 		bt = new BluetoothSPP(this);
-
-		if(!bt.isBluetoothAvailable()) {
-			Toast.makeText(getApplicationContext()
-					, "Bluetooth is not available"
-					, Toast.LENGTH_SHORT).show();
-            finish();
-		}
 		
 		bt.setOnDataReceivedListener(new OnDataReceivedListener() {
 			public void onDataReceived(byte[] data, String message) {
-				Toast.makeText(SimpleActivity.this, message, Toast.LENGTH_SHORT).show();
+				//Toast.makeText(SimpleActivity.this, message, Toast.LENGTH_SHORT).show();
+				Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG).show();
 			}
 		});
 		
 		bt.setBluetoothConnectionListener(new BluetoothConnectionListener() {
 			public void onDeviceConnected(String name, String address) {
-				Toast.makeText(getApplicationContext()
+				/*Toast.makeText(getApplicationContext()
 						, "Connected to " + name + "\n" + address
-						, Toast.LENGTH_SHORT).show();
+						, Toast.LENGTH_SHORT).show();*/
+				Snackbar.make(findViewById(android.R.id.content), "Connected to " + name + "\n" + address, Snackbar.LENGTH_LONG).show();
 			}
 
 			public void onDeviceDisconnected() {
-				Toast.makeText(getApplicationContext()
-						, "Connection lost", Toast.LENGTH_SHORT).show();
+				/*Toast.makeText(getApplicationContext()
+						, "Connection lost", Toast.LENGTH_SHORT).show();*/
+				Snackbar.make(findViewById(android.R.id.content), "Connection lost", Snackbar.LENGTH_LONG).show();
 			}
 
 			public void onDeviceConnectionFailed() {
-				Toast.makeText(getApplicationContext()
-						, "Unable to connect", Toast.LENGTH_SHORT).show();
+				/*Toast.makeText(getApplicationContext()
+						, "Unable to connect", Toast.LENGTH_SHORT).show();*/
+				Snackbar.make(findViewById(android.R.id.content), "Unable to connect", Snackbar.LENGTH_LONG).show();
 			}
 		});
 		
@@ -121,9 +119,10 @@ public class SimpleActivity extends Activity {
                 bt.startService(BluetoothState.DEVICE_ANDROID);
                 setup();
             } else {
-                Toast.makeText(getApplicationContext()
+                /*Toast.makeText(getApplicationContext()
                 		, "Bluetooth was not enabled."
-                		, Toast.LENGTH_SHORT).show();
+                		, Toast.LENGTH_SHORT).show();*/
+				Snackbar.make(findViewById(android.R.id.content), "Bluetooth was not enabled.", Snackbar.LENGTH_LONG).show();
                 finish();
             }
         }

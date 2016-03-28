@@ -9,4 +9,5 @@
     <string name="title_activity_device_list">DeviceListActivity</string>
     <string name="title_activity_terminal">TerminalActivity</string>
 
+    <string name="bluetooth_not_available">Bluetooth not available</string>
 </resources>

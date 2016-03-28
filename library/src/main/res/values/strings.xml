@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--menu actions -->
+    <string name="action_scan">Scan</string>
+
+    <!-- DeviceList -->
+    <string name="bluetooth_devices">Bluetooth Devices</string>
+    <string name="no_devices_found">No devices found</string>
+    <string name="scanning">Scanning for devices...</string>
+    <string name="select_device">Select a Device</string>
+
+    <!-- Global -->
+    <string name="device_name_missmatch">Device name missmatch...</string>
+</resources>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Akexorcist
+ * Copyright 2016 Darkyelox
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 
 
-package app.akexorcist.bluetotohspp.library;
+package app.darkyelox.bluetoothspp.library;
 
 public class BluetoothState {
     // Constants that indicate the current connection state
@@ -30,7 +30,7 @@ public class BluetoothState {
     public static final int MESSAGE_READ = 2;
     public static final int MESSAGE_WRITE = 3;
     public static final int MESSAGE_DEVICE_NAME = 4;
-    public static final int MESSAGE_TOAST = 5;
+    public static final int MESSAGE_SNACKBAR = 5;
     
     // Intent request codes
     public static final int REQUEST_CONNECT_DEVICE = 384;
@@ -39,7 +39,7 @@ public class BluetoothState {
     // Key names received from the BluetoothChatService Handler
     public static final String DEVICE_NAME = "device_name";
     public static final String DEVICE_ADDRESS = "device_address";
-    public static final String TOAST = "toast";
+    public static final String SNACKBAR = "snackbar";
     
     public static final boolean DEVICE_ANDROID = true;
     public static final boolean DEVICE_OTHER = false;

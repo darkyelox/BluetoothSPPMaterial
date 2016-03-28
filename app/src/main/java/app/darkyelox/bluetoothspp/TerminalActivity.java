@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package app.akexorcist.bluetoothspp;
+package app.darkyelox.bluetoothspp;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -29,11 +29,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import app.akexorcist.bluetotohspp.library.BluetoothSPP;
-import app.akexorcist.bluetotohspp.library.BluetoothState;
-import app.akexorcist.bluetotohspp.library.DeviceList;
-import app.akexorcist.bluetotohspp.library.BluetoothSPP.BluetoothConnectionListener;
-import app.akexorcist.bluetotohspp.library.BluetoothSPP.OnDataReceivedListener;
+import app.darkyelox.bluetoothspp.library.BluetoothSPP;
+import app.darkyelox.bluetoothspp.library.BluetoothState;
+import app.darkyelox.bluetoothspp.library.DeviceList;
+import app.darkyelox.bluetoothspp.library.BluetoothSPP.BluetoothConnectionListener;
+import app.darkyelox.bluetoothspp.library.BluetoothSPP.OnDataReceivedListener;
 
 public class TerminalActivity extends Activity {
     BluetoothSPP bt;
@@ -54,12 +54,12 @@ public class TerminalActivity extends Activity {
 
         bt = new BluetoothSPP(this);
 
-        if(!bt.isBluetoothAvailable()) {
+        /*if(!bt.isBluetoothAvailable()) {
             Toast.makeText(getApplicationContext()
                     , "Bluetooth is not available"
                     , Toast.LENGTH_SHORT).show();
             finish();
-        }
+        }*/
 
         bt.setOnDataReceivedListener(new OnDataReceivedListener() {
             public void onDataReceived(byte[] data, String message) {

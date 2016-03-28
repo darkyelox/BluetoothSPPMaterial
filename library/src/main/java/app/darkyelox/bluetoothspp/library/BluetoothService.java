@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009 The Android Open Source Project
+ * Copyright 2016 Darkyelox
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package app.akexorcist.bluetotohspp.library;
+package app.darkyelox.bluetoothspp.library;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -203,7 +203,7 @@ public class BluetoothService {
     private class AcceptThread extends Thread {
         // The local server socket
         private BluetoothServerSocket mmServerSocket;
-        private String mSocketType;
+        private String mSocketType = null;
         boolean isRunning = true;
 
         public AcceptThread(boolean isAndroid) {
@@ -215,13 +215,15 @@ public class BluetoothService {
                     tmp = mAdapter.listenUsingRfcommWithServiceRecord(NAME_SECURE, UUID_ANDROID_DEVICE);
                 else
                     tmp = mAdapter.listenUsingRfcommWithServiceRecord(NAME_SECURE, UUID_OTHER_DEVICE);
-            } catch (IOException e) { }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             mmServerSocket = tmp;
         }
 
         public void run() {
             setName("AcceptThread" + mSocketType);
-            BluetoothSocket socket = null;
+            BluetoothSocket socket;
 
             // Listen to the server socket if we're not connected
             while (mState != BluetoothState.STATE_CONNECTED && isRunning) {
@@ -248,7 +250,9 @@ public class BluetoothService {
                             // Either not ready or already connected. Terminate new socket.
                             try {
                                 socket.close();
-                            } catch (IOException e) { }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                             break;
                         }
                     }
@@ -260,7 +264,9 @@ public class BluetoothService {
             try {
                 mmServerSocket.close();
                 mmServerSocket = null;
-            } catch (IOException e) { }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         public void kill() {
@@ -275,7 +281,7 @@ public class BluetoothService {
     private class ConnectThread extends Thread {
         private final BluetoothSocket mmSocket;
         private final BluetoothDevice mmDevice;
-        private String mSocketType;
+        private String mSocketType = null;
 
         public ConnectThread(BluetoothDevice device) {
             mmDevice = device;
@@ -288,7 +294,9 @@ public class BluetoothService {
                     tmp = device.createRfcommSocketToServiceRecord(UUID_ANDROID_DEVICE);
                 else
                     tmp = device.createRfcommSocketToServiceRecord(UUID_OTHER_DEVICE);
-            } catch (IOException e) { }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             mmSocket = tmp;
         }
 
@@ -305,7 +313,9 @@ public class BluetoothService {
                 // Close the socket
                 try {
                     mmSocket.close();
-                } catch (IOException e2) { }
+                } catch (IOException e2) {
+                    e2.printStackTrace();
+                }
                 connectionFailed();
                 return;
             }
@@ -322,7 +332,9 @@ public class BluetoothService {
         public void cancel() {
             try {
                 mmSocket.close();
-            } catch (IOException e) { }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -342,7 +354,9 @@ public class BluetoothService {
             try {
                 tmpIn = socket.getInputStream();
                 tmpOut = socket.getOutputStream();
-            } catch (IOException e) { }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             mmInStream = tmpIn;
             mmOutStream = tmpOut;
@@ -350,7 +364,7 @@ public class BluetoothService {
 
         public void run() {
             byte[] buffer;
-            ArrayList<Integer> arr_byte = new ArrayList<Integer>();
+            ArrayList<Integer> arr_byte = new ArrayList<>();
 
             // Keep listening to the InputStream while connected
             while (true) {
@@ -365,7 +379,7 @@ public class BluetoothService {
                         // Send the obtained bytes to the UI Activity
                         mHandler.obtainMessage(BluetoothState.MESSAGE_READ
                                 , buffer.length, -1, buffer).sendToTarget();
-                        arr_byte = new ArrayList<Integer>();
+                        arr_byte = new ArrayList<>();
                     } else {
                         arr_byte.add(data);
                     }
@@ -391,13 +405,17 @@ public class BluetoothService {
                 // Share the sent message back to the UI Activity
                 mHandler.obtainMessage(BluetoothState.MESSAGE_WRITE
                         , -1, -1, buffer).sendToTarget();
-            } catch (IOException e) { }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         public void cancel() {
             try {
                 mmSocket.close();
-            } catch (IOException e) { }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

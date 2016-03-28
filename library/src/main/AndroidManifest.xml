@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="app.akexorcist.bluetotohspp.library"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="app.darkyelox.bluetoothspp.library"
     android:versionCode="1"
     android:versionName="1.0">
 
@@ -7,7 +8,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application>
-        <activity android:name="app.akexorcist.bluetotohspp.library.DeviceList" />
+        <activity android:name="app.darkyelox.bluetoothspp.library.DeviceList" />
     </application>
 
 </manifest>

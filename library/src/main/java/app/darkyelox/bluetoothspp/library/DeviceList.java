@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Akexorcist
+ * Copyright 2016 Darkyelox
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 
 
-package app.akexorcist.bluetotohspp.library;
+package app.darkyelox.bluetoothspp.library;
 
 import java.util.Set;
 
@@ -28,19 +28,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
 @SuppressLint("NewApi")
-public class DeviceList extends Activity {
+public class DeviceList extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
     // Debugging
     private static final String TAG = "BluetoothSPP";
     private static final boolean D = true;
@@ -49,26 +51,30 @@ public class DeviceList extends Activity {
     private BluetoothAdapter mBtAdapter;
     private ArrayAdapter<String> mPairedDevicesArrayAdapter;
     private Set<BluetoothDevice> pairedDevices;
-    private Button scanButton;
+    private SwipeRefreshLayout swipeRefreshScan;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
         // Setup the window
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        //requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         int listId = getIntent().getIntExtra("layout_list", R.layout.device_list);
         setContentView(listId);
+
+        // Configure Swipe Refresh Layout
+        swipeRefreshScan = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_scan);
+        swipeRefreshScan.setOnRefreshListener(this);
         
         String strBluetoothDevices = getIntent().getStringExtra("bluetooth_devices");
         if(strBluetoothDevices == null) 
-        	strBluetoothDevices = "Bluetooth Devices";
+        	strBluetoothDevices = getResources().getString(R.string.bluetooth_devices);
         setTitle(strBluetoothDevices);
         
         // Set result CANCELED in case the user backs out
         setResult(Activity.RESULT_CANCELED);
         
         // Initialize the button to perform device discovery
-        scanButton = (Button) findViewById(R.id.button_scan);
+        /*scanButton = (Button) findViewById(R.id.button_scan);
         String strScanDevice = getIntent().getStringExtra("scan_for_devices");
         if(strScanDevice == null) 
         	strScanDevice = "SCAN FOR DEVICES";
@@ -77,12 +83,12 @@ public class DeviceList extends Activity {
             public void onClick(View v) {
                 doDiscovery();
             }
-        });
+        });*/
 
         // Initialize array adapters. One for already paired devices 
         // and one for newly discovered devices
         int layout_text = getIntent().getIntExtra("layout_text", R.layout.device_name);
-        mPairedDevicesArrayAdapter = new ArrayAdapter<String>(this, layout_text);
+        mPairedDevicesArrayAdapter = new ArrayAdapter<>(this, layout_text);
 
         // Find and set up the ListView for paired devices
         ListView pairedListView = (ListView) findViewById(R.id.list_devices);
@@ -109,7 +115,7 @@ public class DeviceList extends Activity {
                 mPairedDevicesArrayAdapter.add(device.getName() + "\n" + device.getAddress());
             }
         } else {
-            String noDevices = "No devices found";
+            String noDevices = getResources().getString(R.string.no_devices_found);
             mPairedDevicesArrayAdapter.add(noDevices);
         }
     }
@@ -124,6 +130,28 @@ public class DeviceList extends Activity {
         // Unregister broadcast listeners
         this.unregisterReceiver(mReceiver);
         this.finish();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.device_list_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.action_scan){
+            doDiscovery();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onRefresh() {
+        doDiscovery();
     }
 
     // Start device discover with the BluetoothAdapter
@@ -141,15 +169,16 @@ public class DeviceList extends Activity {
         } else {
             String strNoFound = getIntent().getStringExtra("no_devices_found");
             if(strNoFound == null) 
-            	strNoFound = "No devices found";
+            	strNoFound = getResources().getString(R.string.no_devices_found);
             mPairedDevicesArrayAdapter.add(strNoFound);
         }
         
         // Indicate scanning in the title
         String strScanning = getIntent().getStringExtra("scanning");
         if(strScanning == null) 
-        	strScanning = "Scanning for devices...";
-        setProgressBarIndeterminateVisibility(true);
+        	strScanning = getResources().getString(R.string.scanning);
+        //setProgressBarIndeterminateVisibility(true);
+        swipeRefreshScan.setRefreshing(true);
         setTitle(strScanning);
 
         // Turn on sub-title for new devices
@@ -172,7 +201,7 @@ public class DeviceList extends Activity {
 
             String strNoFound = getIntent().getStringExtra("no_devices_found");
             if(strNoFound == null) 
-            	strNoFound = "No devices found";
+            	strNoFound = getResources().getString(R.string.no_devices_found);
 	        if(!((TextView) v).getText().toString().equals(strNoFound)) {
 	            // Get the device MAC address, which is the last 17 chars in the View
 	            String info = ((TextView) v).getText().toString();
@@ -204,7 +233,7 @@ public class DeviceList extends Activity {
                 if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
                     String strNoFound = getIntent().getStringExtra("no_devices_found");
                     if(strNoFound == null) 
-                    	strNoFound = "No devices found";                    
+                    	strNoFound = getResources().getString(R.string.no_devices_found);
                     
                 	if(mPairedDevicesArrayAdapter.getItem(0).equals(strNoFound)) {
                 		mPairedDevicesArrayAdapter.remove(strNoFound);
@@ -214,13 +243,13 @@ public class DeviceList extends Activity {
                 
             // When discovery is finished, change the Activity title
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
-                setProgressBarIndeterminateVisibility(false);
+                //setProgressBarIndeterminateVisibility(false);
+                swipeRefreshScan.setRefreshing(false);
                 String strSelectDevice = getIntent().getStringExtra("select_device");
                 if(strSelectDevice == null) 
-                	strSelectDevice = "Select a device to connect";
+                	strSelectDevice = getResources().getString(R.string.select_device);
                 setTitle(strSelectDevice);
             }
         }
     };
-
 }

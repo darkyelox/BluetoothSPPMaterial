@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package app.akexorcist.bluetoothspp;
+package app.darkyelox.bluetoothspp;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -25,13 +25,13 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
-import app.akexorcist.bluetotohspp.library.BluetoothSPP;
-import app.akexorcist.bluetotohspp.library.BluetoothSPP.AutoConnectionListener;
-import app.akexorcist.bluetotohspp.library.BluetoothSPP.BluetoothStateListener;
-import app.akexorcist.bluetotohspp.library.BluetoothSPP.BluetoothConnectionListener;
-import app.akexorcist.bluetotohspp.library.BluetoothSPP.OnDataReceivedListener;
-import app.akexorcist.bluetotohspp.library.BluetoothState;
-import app.akexorcist.bluetotohspp.library.DeviceList;
+import app.darkyelox.bluetoothspp.library.BluetoothSPP;
+import app.darkyelox.bluetoothspp.library.BluetoothSPP.AutoConnectionListener;
+import app.darkyelox.bluetoothspp.library.BluetoothSPP.BluetoothStateListener;
+import app.darkyelox.bluetoothspp.library.BluetoothSPP.BluetoothConnectionListener;
+import app.darkyelox.bluetoothspp.library.BluetoothSPP.OnDataReceivedListener;
+import app.darkyelox.bluetoothspp.library.BluetoothState;
+import app.darkyelox.bluetoothspp.library.DeviceList;
 
 public class ListenerActivity extends Activity {
     BluetoothSPP bt;
@@ -42,12 +42,12 @@ public class ListenerActivity extends Activity {
 
         bt = new BluetoothSPP(this);
 
-        if(!bt.isBluetoothAvailable()) {
+        /*if(!bt.isBluetoothAvailable()) {
             Toast.makeText(getApplicationContext()
                     , "Bluetooth is not available"
                     , Toast.LENGTH_SHORT).show();
             finish();
-        }
+        }*/
 
         bt.setBluetoothStateListener(new BluetoothStateListener() {
             public void onServiceStateChanged(int state) {
